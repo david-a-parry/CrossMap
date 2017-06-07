@@ -18,6 +18,7 @@ import subprocess
 import string
 from textwrap import wrap
 from time import strftime
+import tempfile
 
 import pysam
 from bx.bbi.bigwig_file import BigWigFile
@@ -372,10 +373,34 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 		pysam.faidx(refgenome)
 	
 	refFasta = pysam.Fastafile(refgenome)
-	
-	FILE_OUT = open(outfile ,'w')
-	UNMAP = open(outfile + '.unmap','w')
-	
+	if outfile.endswith(('.gz', '.bgz')):
+		try:
+			from Bio import bgzf
+		except ImportError:
+			raise Exception("Can not import bgzf via biopython. " + 
+					"Please install biopython in order " + 
+					"to write bgzip compressed (.gz/.bgz) " + 
+					" output.")
+		FILE_OUT = bgzf.BgzfWriter(outfile)
+		if outfile.endwith('.gz'):
+			unmapfile = outfile.strip('.gz') + '.unmap.gz'
+		else:
+			unmapfile = outfile.strip('.bgz') + '.unmap.bgz'
+		UNMAP = bgzf.BgzfWriter(unmapfile)
+	else:
+		FILE_OUT = open(outfile ,'w')
+		unmapfile = outfile + '.unmap'
+		try:
+			UNMAP = open(unmapfile,'w')
+		except IOError:
+			sys.stderr.write("Could not create {} - trying to make tmpfile\n" 
+					 .format(unmapfile))
+			(u, fallback) = tempfile.mkstemp(suffix='.vcf', 
+							prefix='crossmap_unmap_', 
+							dir='./')#, text=True)
+			sys.stderr.write("Created tmp unmap file {}\n" .format(fallback))
+			UNMAP = open(fallback, 'w')
+
 	total = 0
 	fail = 0
 	withChr = False
