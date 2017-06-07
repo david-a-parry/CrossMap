@@ -8,6 +8,8 @@ This is a fork of CrossMap (http://crossmap.sourceforge.net/) which has been mod
 
 ...because with huge VCF datasets it is sometimes necessary to output to compressed files or pipe to other commands. Neither of these options was available in the most recent version of CrossMap at the time of forking. This is based on v0.2.6 of CrossMap.
 
+Furthermore, the mode to read from STDIN in CrossMap.py is broken. This fork fixes that issue.
+
 ## How?
 
 In addition to the python modules required by the standard version of CrossMap you will also need to have the Bio.bgzf module from biopython (biopython.org) if you want to write to bgzip compressed files. If you have pip installed you should be able to run the following to acheive this:
@@ -25,6 +27,10 @@ In order to **pipe** your output (unix-like systems only), specify your output f
     bin/CrossMap.py vcf hg38ToHg19.over.chain.gz input.vcf hg19.fa /dev/stdout | <some_other_command>
 
 When piping, unmapped data will be sent to a file named in the format 'crossmap_unmap_xxxxxx.vcf' where 'xxxxxx' will be random alphanumeric characters. 
+
+This fork also fixes the ability to read from stdin. In the below example, if the input filename is given as '-' data will be read from STDIN.
+
+    tabix -h input.vcf.gz chr1:1-20000000 | bin/CrossMap.py vcf hg38ToHg19.over.chain.gz - hg19.fa output.vcf.gz
 
 ## Credit
 
