@@ -382,7 +382,7 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 					"to write bgzip compressed (.gz/.bgz) " + 
 					" output.")
 		FILE_OUT = bgzf.BgzfWriter(outfile)
-		if outfile.endwith('.gz'):
+		if outfile.endswith('.gz'):
 			unmapfile = outfile.strip('.gz') + '.unmap.gz'
 		else:
 			unmapfile = outfile.strip('.bgz') + '.unmap.bgz'
