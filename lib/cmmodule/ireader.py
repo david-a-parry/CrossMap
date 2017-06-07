@@ -7,6 +7,7 @@ read compressed (.gz .bz) files
 import bz2
 import gzip
 import urllib
+import sys
 
 def nopen(f, mode="rb"):
 	if not isinstance(f, basestring):
