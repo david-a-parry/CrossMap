@@ -2,13 +2,15 @@
 
 ## What dis?
 
-This is a fork of CrossMap (http://crossmap.sourceforge.net/) which has been modified so that VCF output can be bgzip compressed or piped on the fly.
+This is a fork of CrossMap (http://crossmap.sourceforge.net/) which has been modified so that VCF output can be bgzip compressed or piped on the fly. A couple of other bug fixes for VCF parsing have been added as well (see below).
 
 ## Why?
 
 ...because with huge VCF datasets it is sometimes necessary to output to compressed files or pipe to other commands. Neither of these options was available in the most recent version of CrossMap at the time of forking. This is based on v0.2.6 of CrossMap.
 
 Furthermore, the mode to read from STDIN in CrossMap.py is broken. This fork fixes that issue.
+
+Unfortunately there is no public git or svn repo for CrossMap, so these changes cannot be pushed upstream.
 
 ## How?
 
@@ -31,6 +33,12 @@ When piping, unmapped data will be sent to a file named in the format 'crossmap_
 This fork also fixes the ability to read from stdin. In the below example, if the input filename is given as '-' data will be read from STDIN.
 
     tabix -h input.vcf.gz chr1:1-20000000 | bin/CrossMap.py vcf hg38ToHg19.over.chain.gz - hg19.fa output.vcf.gz
+
+## Additional fixes to VCF mapping
+
+- The original code for CrossMap checks that the new REF field is not identical to the new ALT field, but this check is not sufficient to confirm that one ALT allele of a multiallelic variant is not identical to the REF allele. A fix, checking each ALT allele of multiallelic variants is not identical to the REF allele is added, with variants failing this check added to the unmapped file.
+
+- The original code permits the liftover of variants where the overlapping region is partially deleted in the new reference. This leads to truncated REF alleles, which will not be a faithful representation of the what the genotyper was comparing with the ALT alleles. These variants are now filtered into the unmapped file.
 
 ## Credit
 
