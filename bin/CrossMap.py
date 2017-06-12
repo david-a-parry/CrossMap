@@ -436,6 +436,12 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 				print >>UNMAP, line
 				fail += 1
 				continue
+			if a[0][1] != start or a[0][2] != end:
+			#require original coordinates to not be altered, 
+			#otherwise REF allele will be altered inappropriately
+				print >>UNMAP, line
+				fail += 1
+				continue
 			if len(a) == 2:
 				# update chrom
 				if withChr is False:
