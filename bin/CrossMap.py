@@ -450,7 +450,7 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 				
 				fields[3] = refFasta.fetch(str(a[1][0]),a[1][1],a[1][2]).upper()
 				
-				if fields[3] != fields[4]:
+				if fields[3] not in fields[4].split(','):
 					print >>FILE_OUT, '\t'.join(map(str, fields))
 				else:
 					print >>UNMAP, line
