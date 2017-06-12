@@ -14,25 +14,37 @@ Unfortunately there is no public git or svn repo for CrossMap, so these changes 
 
 ## How?
 
+### Installation
+
+Download this repo using the 'Clone or download' button above or using the command 'git clone https://github.com/gantzgraf/CrossMap.git'. From the downloaded CrossMap directory, for  system-wide install run:
+
+    sudo python2 setup.py install
+
+if you do not have sudo priveleges or just want to install for your own account (CrossMap.py will be installed in $HOME/.local/bin/CrossMap.py)
+
+    python2 setup.py install --user
+   
 In addition to the python modules required by the standard version of CrossMap you will also need to have the Bio.bgzf module from biopython (biopython.org) if you want to write to bgzip compressed files. If you have pip installed you should be able to run the following to acheive this:
 
     pip install biopython
 
+### Running (changes to how you can run CrossMap.py)
+
 In order to **output to bgzip compressed files** simply **add '.gz' or '.bgz'** to the end of your output filename. Input can be in standard or compressed format. For example:
 
-    bin/CrossMap.py vcf hg38ToHg19.over.chain.gz input.vcf.gz hg19.fa output.vcf.gz
+    CrossMap.py vcf hg38ToHg19.over.chain.gz input.vcf.gz hg19.fa output.vcf.gz
 
 When outputting compressed data, the '.unmap' file will also be compressed and have a matching '.gz' or '.bgz' extension.
 
 In order to **pipe** your output (unix-like systems only), specify your output filename as /dev/stdout and pipe to your command of choice:
 
-    bin/CrossMap.py vcf hg38ToHg19.over.chain.gz input.vcf hg19.fa /dev/stdout | <some_other_command>
+    CrossMap.py vcf hg38ToHg19.over.chain.gz input.vcf hg19.fa /dev/stdout | <some_other_command>
 
 When piping, unmapped data will be sent to a file named in the format 'crossmap_unmap_xxxxxx.vcf' where 'xxxxxx' will be random alphanumeric characters. 
 
 This fork also fixes the ability to read from stdin. In the below example, if the input filename is given as '-' data will be read from STDIN.
 
-    tabix -h input.vcf.gz chr1:1-20000000 | bin/CrossMap.py vcf hg38ToHg19.over.chain.gz - hg19.fa output.vcf.gz
+    tabix -h input.vcf.gz chr1:1-20000000 | CrossMap.py vcf hg38ToHg19.over.chain.gz - hg19.fa output.vcf.gz
 
 ## Additional fixes to VCF mapping
 
