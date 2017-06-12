@@ -36,7 +36,7 @@ This fork also fixes the ability to read from stdin. In the below example, if th
 
 ## Additional fixes to VCF mapping
 
-- The original code for CrossMap checks that the new REF field is not identical to the new ALT field, but this check is not sufficient to confirm that one ALT allele of a multiallelic variant is not identical to the REF allele. A fix, checking each ALT allele of multiallelic variants is not identical to the REF allele is added, with variants failing this check added to the unmapped file.
+- The original code for CrossMap checks that the new REF field is not identical to the new ALT field, but this check is not sufficient to confirm that one ALT allele of a multiallelic variant is not identical to the REF allele. A fix is added to check each ALT allele of a multiallelic variant is not identical to the REF allele, with variants failing this check added to the unmapped file.
 
 - The original code permits the liftover of variants where the overlapping region is partially deleted in the new reference. This leads to truncated REF alleles, which will not be a faithful representation of the what the genotyper was comparing with the ALT alleles. These variants are now filtered into the unmapped file.
 
