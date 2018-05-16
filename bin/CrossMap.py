@@ -446,6 +446,8 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 				# update chrom
 				if withChr is False:
 					fields[0] = str(a[1][0]).replace('chr','')
+				else:
+					fields[0] = a[1][0]
 				# update start coordinate
 				fields[1] = a[1][1] + 1
 				
