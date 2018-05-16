@@ -1,9 +1,9 @@
 MANIFEST.in
+README.md
 distribute_setup.py
 setup.cfg
 setup.py
 bin/CrossMap.py
-data/.DS_Store
 doc/README.txt
 lib/psyco_full.py
 lib/CrossMap.egg-info/PKG-INFO
