@@ -52,6 +52,8 @@ This fork also fixes the ability to read from stdin. In the below example, if th
 
 - The original code permits the liftover of variants where the overlapping region is partially deleted in the new reference. This leads to truncated REF alleles, which will not be a faithful representation of the what the genotyper was comparing with the ALT alleles. These variants are now filtered into the unmapped file.
 
+- The original code would not convert between assemblies where one had the 'chr' prefix for contigs and the other did not. This version will respect the naming convention of whatever chain you are using. This means that you CANNOT use a hg19ToHg38 to convert between GRCh37 style to GRCh38 style, but it does allow for using a GRCh37ToHg38 chain where GRCh37 style (no chr prefix) naming conventions can be converted directly to hg38 (with chr prefix) without requiring any additional commands for adding/removing chr prefixes. In brief, your chain file must convert chromosome names EXACTLY as they appear in your VCF to the exact chromosome name you want in your output (e.g. 1 => chr1).
+
 ## Credit
 
 The code was modified by David A. Parry at University of Edinburgh to perform the operations described above. For details of the original software please see the website for the original version (http://crossmap.sourceforge.net/) and the citation:
