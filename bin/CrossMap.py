@@ -403,7 +403,6 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 
 	total = 0
 	fail = 0
-	withChr = False
 	
 	for line in ireader.reader(infile):
 		if not line.strip():
@@ -424,11 +423,7 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 			print >>UNMAP, line
 		else:
 			total += 1
-			if fields[0].startswith('chr'):
-				withChr = True
-				chrom = fields[0]
-			else:
-				chrom = 'chr' + fields[0]
+			chrom = fields[0]
 			start = int(fields[1])-1	# 0 based
 			end = start + len(fields[3])
 			a = map_coordinates(mapping, chrom, start, end,'+')
@@ -443,11 +438,7 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 				fail += 1
 				continue
 			if len(a) == 2:
-				# update chrom
-				if withChr is False:
-					fields[0] = str(a[1][0]).replace('chr','')
-				else:
-					fields[0] = a[1][0]
+				fields[0] = a[1][0]
 				# update start coordinate
 				fields[1] = a[1][1] + 1
 				
