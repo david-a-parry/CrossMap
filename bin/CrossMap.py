@@ -383,9 +383,9 @@ def crossmap_vcf_file(mapping, infile,outfile, liftoverfile, refgenome):
 					" output.")
 		FILE_OUT = bgzf.BgzfWriter(outfile)
 		if outfile.endswith('.gz'):
-			unmapfile = outfile.strip('.gz') + '.unmap.gz'
+			unmapfile = outfile.rstrip('.gz') + '.unmap.gz'
 		else:
-			unmapfile = outfile.strip('.bgz') + '.unmap.bgz'
+			unmapfile = outfile.rstrip('.bgz') + '.unmap.bgz'
 		UNMAP = bgzf.BgzfWriter(unmapfile)
 	else:
 		FILE_OUT = open(outfile ,'w')
